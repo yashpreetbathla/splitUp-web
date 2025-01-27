@@ -5,6 +5,7 @@ import { Provider } from "react-redux";
 import store from "./store/appStore";
 import Body from "./components/Body";
 import Feed from "./components/Feed";
+import GroupDetail from "./components/GroupDetail";
 
 function App() {
   return (
@@ -15,7 +16,7 @@ function App() {
             <Route path="/" element={<Body />}>
               <Route path="/" element={<Feed />} />
               <Route path="/login" element={<Login />} />
-              {/* <Route path="/profile" element={<Profile />} /> */}
+              <Route path="/group/:groupId" element={<GroupDetail />} />
               {/* <Route path="/connections" element={<Connections />} /> */}
               {/* <Route path="/requests" element={<Requests />} /> */}
               {/* <Route path="/chat/:targetUserId" element={<Chat />} /> */}

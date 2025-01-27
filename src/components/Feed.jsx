@@ -30,7 +30,7 @@ const Feed = () => {
 
   return (
     <div>
-      <DashboardNav />
+      <DashboardNav titleNav="Groups" buttonText="Create Group" />
       <ListGroups groupsData={groupData} />
     </div>
   );
