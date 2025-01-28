@@ -127,7 +127,7 @@ const GroupDetail = () => {
       const res = await axios.post(BASE_URL + "/expense/create", payloadData, {
         withCredentials: true,
       });
-      console.log(res.data?.data);
+      setPayload({});
       fetchExpenseData();
     } catch (err) {
       console.error(err);
@@ -189,47 +189,82 @@ const GroupDetail = () => {
             width="w-2xl"
             saveBtnText="Save"
             onSubmit={() => {
-              if (activeTab === TABS_DATA.split_by_amount) {
+              if (btn === OPTIONS_SPLIT.split) {
+                if (activeTab === TABS_DATA.split_by_amount) {
+                  setPayload((prev) => ({
+                    ...prev,
+                    owedBy: Object.keys(payload?.data)?.map((key) => ({
+                      email: key,
+                      amount: Number(payload?.data[key]),
+                    })),
+                  }));
+                }
+
+                if (activeTab === TABS_DATA.split_by_percentage) {
+                  setPayload((prev) => ({
+                    ...prev,
+                    owedBy: Object.keys(payload?.data)?.map((key) => ({
+                      email: key,
+                      amount: calculateFinalAmount(
+                        Number(payload?.amount),
+                        Number(payload?.data[key])
+                      ),
+                    })),
+                  }));
+                }
+
+                if (activeTab === TABS_DATA.split_by_share) {
+                  const totalShares = Object.values(payload?.data || {}).reduce(
+                    (acc, curr) => acc + Number(curr),
+                    0
+                  );
+
+                  console.log("test,", totalShares);
+
+                  setPayload((prev) => ({
+                    ...prev,
+                    owedBy: Object.keys(payload?.data)?.map((key) => ({
+                      email: key,
+                      amount: calculateShareAmount(
+                        Number(payload?.amount),
+                        Number(payload?.data[key]),
+                        totalShares
+                      ),
+                    })),
+                  }));
+                }
+              }
+
+              if (btn === OPTIONS_SPLIT.youOwe) {
                 setPayload((prev) => ({
                   ...prev,
-                  owedBy: Object.keys(payload?.data)?.map((key) => ({
-                    email: key,
-                    amount: Number(payload?.data[key]),
-                  })),
+                  owedBy: [
+                    {
+                      email: payload?.paidBy,
+                      amount: Number(payload?.amount),
+                    },
+                  ],
                 }));
               }
 
-              if (activeTab === TABS_DATA.split_by_percentage) {
-                setPayload((prev) => ({
-                  ...prev,
-                  owedBy: Object.keys(payload?.data)?.map((key) => ({
-                    email: key,
-                    amount: calculateFinalAmount(
-                      Number(payload?.amount),
-                      Number(payload?.data[key])
-                    ),
-                  })),
-                }));
-              }
-
-              if (activeTab === TABS_DATA.split_by_share) {
-                const totalShares = Object.values(payload?.data || {}).reduce(
-                  (acc, curr) => acc + Number(curr),
-                  0
-                );
-
-                console.log("test,", totalShares);
+              if (btn === OPTIONS_SPLIT.theyOwe) {
+                const othersNumber = groupData?.participants?.length - 1;
+                const amountAmongOthers =
+                  othersNumber !== 0
+                    ? Number(payload?.amount) / othersNumber
+                    : 0;
 
                 setPayload((prev) => ({
                   ...prev,
-                  owedBy: Object.keys(payload?.data)?.map((key) => ({
-                    email: key,
-                    amount: calculateShareAmount(
-                      Number(payload?.amount),
-                      Number(payload?.data[key]),
-                      totalShares
+                  owedBy: groupData?.participants
+                    ?.map((participant) => ({
+                      email: participant,
+                      amount:
+                        participant === payload?.paidBy ? 0 : amountAmongOthers,
+                    }))
+                    .filter(
+                      (participant) => participant.email !== payload?.paidBy
                     ),
-                  })),
                 }));
               }
 
