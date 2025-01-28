@@ -41,6 +41,15 @@ const calculateShareAmount = (totalAmount, shares, totalShares) => {
   return Math.round(finalAmount * 100) / 100;
 };
 
+const stringForPending = (pendingAmount) => {
+  if (pendingAmount === 0) {
+    return null;
+  }
+  if (pendingAmount < 0) {
+    return <p className="text-red-500">You owe {-1 * pendingAmount}₹</p>;
+  }
+  return <p className="text-green-500">You are owed {pendingAmount}₹</p>;
+};
 const GroupDetail = () => {
   const { groupId } = useParams();
   const [groupData, setGroupData] = useState(null);
@@ -48,6 +57,7 @@ const GroupDetail = () => {
   const [payload, setPayload] = useState({});
 
   const expensesData = useSelector((store) => store.expenses);
+  const userData = useSelector((store) => store.user);
 
   const dispatch = useDispatch();
   const [open, setOpen] = useState(false);
@@ -138,7 +148,7 @@ const GroupDetail = () => {
     fetchGroupData();
     fetchExpenseData();
   }, []);
-  console.log("test,", payload);
+
   return (
     <div>
       <div>
@@ -146,6 +156,68 @@ const GroupDetail = () => {
           titleNav={groupData?.name}
           buttonText="Create Expense"
           onClickButton={() => setOpen(true)}
+          infoData={() => {
+            return (
+              <div>
+                {expensesData?.userSet?.[userData?.email] !== 0 && (
+                  <div className="dropdown dropdown-right dropdown-hover">
+                    <div
+                      tabIndex={0}
+                      role="button"
+                      className="btn btn-circle btn-ghost btn-xs text-info"
+                    >
+                      <svg
+                        tabIndex={0}
+                        xmlns="http://www.w3.org/2000/svg"
+                        fill="none"
+                        viewBox="0 0 24 24"
+                        class="h-4 w-4 stroke-current"
+                      >
+                        <path
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          strokeWidth="2"
+                          d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
+                        ></path>
+                      </svg>
+                    </div>
+                    <div
+                      tabIndex={0}
+                      class="card card-sm dropdown-content bg-base-100 rounded-box z-1 w-64 shadow-sm"
+                    >
+                      <div tabIndex={0} className="card-body">
+                        <h2 className="card-title">
+                          {stringForPending(
+                            expensesData?.userSet?.[userData?.email]
+                          )}
+                        </h2>
+                        {expensesData?.totalPendingAmountArray
+                          ?.filter(
+                            (item) =>
+                              item?.fromUser === userData?.email ||
+                              item?.toUser === userData?.email
+                          )
+                          ?.map((item) => {
+                            if (item?.fromUser === userData?.email) {
+                              return (
+                                <p>
+                                  You owe {item?.toUser} {item?.amount}₹
+                                </p>
+                              );
+                            }
+                            return (
+                              <p>
+                                You are owed {item?.fromUser} {item?.amount}₹
+                              </p>
+                            );
+                          })}
+                      </div>
+                    </div>
+                  </div>
+                )}
+              </div>
+            );
+          }}
         />
       </div>
       <div>
