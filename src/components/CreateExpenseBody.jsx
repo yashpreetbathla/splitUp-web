@@ -6,6 +6,20 @@ const CreateExpenseBody = ({
   payload,
   setPayload,
 }) => {
+  const isAmountAndNameValid = (payload) => {
+    console.log(payload, Number(payload?.amount));
+    if (
+      !payload?.name ||
+      !payload?.amount ||
+      payload?.name?.length < 3 ||
+      payload?.name?.length > 30 ||
+      Number(payload?.amount) <= 0
+    ) {
+      return false;
+    }
+    return true;
+  };
+
   return (
     <div>
       <label className="input validator">
@@ -44,7 +58,12 @@ const CreateExpenseBody = ({
 
       <div className="flex flex-row items-center mt-4">
         <details className="dropdown dropdown-hover">
-          <summary className="btn m-1">Paid by</summary>
+          <summary
+            className="btn m-1 "
+            disabled={isAmountAndNameValid(payload) ? "" : "disabled"}
+          >
+            Paid by
+          </summary>
           <ul className="menu dropdown-content bg-base-100 rounded-box z-[1] w-52 p-2 shadow">
             {groupData?.participants?.map((participant) => (
               <li
@@ -64,7 +83,11 @@ const CreateExpenseBody = ({
 
         <p>and split</p>
 
-        <button className="btn" onClick={() => setOpenPaidBy(true)}>
+        <button
+          className="btn"
+          disabled={isAmountAndNameValid(payload) ? "" : "disabled"}
+          onClick={() => setOpenPaidBy(true)}
+        >
           Owed by
         </button>
       </div>

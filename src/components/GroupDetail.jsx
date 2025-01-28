@@ -9,7 +9,7 @@ import { addExpenses } from "../store/slices/expensesSlice";
 import CreateExpenseBody from "./CreateExpenseBody";
 import Modal from "./Modal";
 import Tabs from "./Tabs";
-import ShareContent from "./ShareContent";
+import ShareContent, { errorCheck } from "./ShareContent";
 
 const OPTIONS_SPLIT = {
   split: "Split the expense",
@@ -50,6 +50,22 @@ const stringForPending = (pendingAmount) => {
   }
   return <p className="text-green-500">You are owed {pendingAmount}₹</p>;
 };
+
+const isPayloadValid = (payload) => {
+  if (
+    !payload?.name ||
+    !payload?.amount ||
+    payload?.name?.length < 3 ||
+    payload?.name?.length > 30 ||
+    Number(payload?.amount) <= 0 ||
+    !payload?.paidBy ||
+    !payload?.owedBy
+  ) {
+    return false;
+  }
+  return true;
+};
+
 const GroupDetail = () => {
   const { groupId } = useParams();
   const [groupData, setGroupData] = useState(null);
@@ -243,6 +259,7 @@ const GroupDetail = () => {
 
             setOpen(false);
           }}
+          isDisabled={!isPayloadValid(payload)}
           children={
             <CreateExpenseBody
               payload={payload}
@@ -342,9 +359,12 @@ const GroupDetail = () => {
 
               setOpenPaidBy(false);
             }}
+            isDisabled={
+              btn === OPTIONS_SPLIT.split &&
+              errorCheck(activeTab, payload?.data, payload)
+            }
           >
             <div>
-              <p>Owed By</p>
               <div className="flex flex-col gap-2">
                 <button
                   className={
@@ -381,7 +401,7 @@ const GroupDetail = () => {
                 </button>
               </div>
               {btn === OPTIONS_SPLIT.split && (
-                <div>
+                <div className="mt-2">
                   <Tabs
                     tabs={tabsData}
                     activeTab={activeTab}

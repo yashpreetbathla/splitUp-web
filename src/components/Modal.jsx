@@ -8,12 +8,13 @@ const Modal = ({
   width = "w-auto",
   closeBtnText = "Close",
   saveBtnText = "Create",
+  isDisabled = false,
 }) => {
   return (
     <dialog id="my_modal_3" className="modal" open={open}>
       <div className={`modal-box ${width} bg-stone-900 scroll-auto`}>
         <div className="my-4">
-          <h2 className="text-2xl font-bold">Create Group</h2>
+          <h2 className="text-2xl font-bold">Create</h2>
         </div>
         <div className="modal-body">{children}</div>
         <div className="modal-action">
@@ -21,7 +22,11 @@ const Modal = ({
             <button className="btn btn-error" onClick={onClose}>
               {closeBtnText}
             </button>
-            <button className="btn btn-success" onClick={onSubmit}>
+            <button
+              className="btn btn-success"
+              disabled={isDisabled}
+              onClick={onSubmit}
+            >
               {saveBtnText}
             </button>
           </form>
