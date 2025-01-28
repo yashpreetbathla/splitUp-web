@@ -29,9 +29,10 @@ const Login = () => {
           withCredentials: true,
         }
       );
-
-      dispatch(addUser(res.data?.data));
-      navigate("/");
+      if (res.data?.data && !userData) {
+        dispatch(addUser(res.data?.data));
+        navigate("/");
+      }
     } catch (err) {
       setError(err?.response?.data?.message || "something went wrong");
     }
@@ -51,9 +52,10 @@ const Login = () => {
           withCredentials: true,
         }
       );
-
-      dispatch(addUser(res.data.data));
-      navigate("/profile");
+      if (res.data?.data && !userData) {
+        dispatch(addUser(res.data.data));
+        navigate("/profile");
+      }
     } catch (err) {
       setError(err?.response?.data?.message || "something went wrong");
     }
