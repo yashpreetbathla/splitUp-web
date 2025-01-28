@@ -1,9 +1,17 @@
 import React from "react";
 
-const Modal = ({ open, onClose, children, onSubmit }) => {
+const Modal = ({
+  open,
+  onClose,
+  children,
+  onSubmit,
+  width = "w-auto",
+  closeBtnText = "Close",
+  saveBtnText = "Create",
+}) => {
   return (
     <dialog id="my_modal_3" className="modal" open={open}>
-      <div className="modal-box w-auto bg-stone-900">
+      <div className={`modal-box ${width} bg-stone-900 scroll-auto`}>
         <div className="my-4">
           <h2 className="text-2xl font-bold">Create Group</h2>
         </div>
@@ -11,10 +19,10 @@ const Modal = ({ open, onClose, children, onSubmit }) => {
         <div className="modal-action">
           <form method="dialog" className="flex gap-2">
             <button className="btn btn-error" onClick={onClose}>
-              Close
+              {closeBtnText}
             </button>
             <button className="btn btn-success" onClick={onSubmit}>
-              Create
+              {saveBtnText}
             </button>
           </form>
         </div>
