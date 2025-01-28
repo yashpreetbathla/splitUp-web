@@ -79,6 +79,8 @@ const GroupDetail = () => {
   const [open, setOpen] = useState(false);
 
   const [openPaidBy, setOpenPaidBy] = useState(false);
+  const [openSettleUpModal, setOpenSettleUpModal] = useState(false);
+
   const [btn, setBtn] = useState(OPTIONS_SPLIT.split);
   const [activeTab, setActiveTab] = useState(TABS_DATA.split_by_amount);
 
@@ -174,62 +176,75 @@ const GroupDetail = () => {
           onClickButton={() => setOpen(true)}
           infoData={() => {
             return (
-              <div>
+              <div className="flex gap-2 items-center">
                 {expensesData?.userSet?.[userData?.email] !== 0 && (
-                  <div className="dropdown dropdown-right dropdown-hover">
-                    <div
-                      tabIndex={0}
-                      role="button"
-                      className="btn btn-circle btn-ghost btn-xs text-info"
-                    >
-                      <svg
+                  <>
+                    <div className="dropdown dropdown-right dropdown-hover">
+                      <div
                         tabIndex={0}
-                        xmlns="http://www.w3.org/2000/svg"
-                        fill="none"
-                        viewBox="0 0 24 24"
-                        class="h-4 w-4 stroke-current"
+                        role="button"
+                        className="btn btn-circle btn-ghost btn-xs text-info"
                       >
-                        <path
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                          strokeWidth="2"
-                          d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
-                        ></path>
-                      </svg>
-                    </div>
-                    <div
-                      tabIndex={0}
-                      class="card card-sm dropdown-content bg-base-100 rounded-box z-1 w-64 shadow-sm"
-                    >
-                      <div tabIndex={0} className="card-body">
-                        <h2 className="card-title">
-                          {stringForPending(
-                            expensesData?.userSet?.[userData?.email]
-                          )}
-                        </h2>
-                        {expensesData?.totalPendingAmountArray
-                          ?.filter(
-                            (item) =>
-                              item?.fromUser === userData?.email ||
-                              item?.toUser === userData?.email
-                          )
-                          ?.map((item) => {
-                            if (item?.fromUser === userData?.email) {
+                        <svg
+                          tabIndex={0}
+                          xmlns="http://www.w3.org/2000/svg"
+                          fill="none"
+                          viewBox="0 0 24 24"
+                          class="h-4 w-4 stroke-current"
+                        >
+                          <path
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                            strokeWidth="2"
+                            d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
+                          ></path>
+                        </svg>
+                      </div>
+                      <div
+                        tabIndex={0}
+                        class="card card-sm dropdown-content bg-base-100 rounded-box z-1 w-64 shadow-sm"
+                      >
+                        <div tabIndex={0} className="card-body">
+                          <h2 className="card-title">
+                            {stringForPending(
+                              expensesData?.userSet?.[userData?.email]
+                            )}
+                          </h2>
+                          {expensesData?.totalPendingAmountArray
+                            ?.filter(
+                              (item) =>
+                                item?.fromUser === userData?.email ||
+                                item?.toUser === userData?.email
+                            )
+                            ?.map((item) => {
+                              if (item?.fromUser === userData?.email) {
+                                return (
+                                  <p>
+                                    You owe {item?.toUser} {item?.amount}₹
+                                  </p>
+                                );
+                              }
                               return (
                                 <p>
-                                  You owe {item?.toUser} {item?.amount}₹
+                                  You are owed {item?.fromUser} {item?.amount}₹
                                 </p>
                               );
-                            }
-                            return (
-                              <p>
-                                You are owed {item?.fromUser} {item?.amount}₹
-                              </p>
-                            );
-                          })}
+                            })}
+                        </div>
                       </div>
                     </div>
-                  </div>
+                    <div
+                      className="tooltip tooltip-primary"
+                      data-tip="Settle Up"
+                    >
+                      <button
+                        className="btn btn-xs btn-circle btn-secondary"
+                        onClick={() => setOpenSettleUpModal(true)}
+                      >
+                        S
+                      </button>
+                    </div>
+                  </>
                 )}
               </div>
             );
@@ -412,6 +427,67 @@ const GroupDetail = () => {
             </div>
           </Modal>
         </div>
+      )}
+      {openSettleUpModal && (
+        <Modal
+          open={openSettleUpModal}
+          onClose={() => setOpenSettleUpModal(false)}
+          width="w-md"
+          titleTxt="Settle Up"
+          saveBtnText="Settle Up"
+          onSubmit={() => {
+            const amount =
+              expensesData?.userSet?.[userData?.email] >= 0
+                ? Number(expensesData?.userSet?.[userData?.email])
+                : -1 * Number(expensesData?.userSet?.[userData?.email]);
+
+            const paidByOrOwedBy = expensesData?.totalPendingAmountArray
+              ?.filter(
+                (item) =>
+                  item?.fromUser === userData?.email ||
+                  item?.toUser === userData?.email
+              )
+              ?.map((item) => ({
+                email:
+                  userData?.email === item?.toUser
+                    ? item?.fromUser
+                    : item?.toUser,
+                amount: item?.amount,
+              }));
+
+            if (expensesData?.userSet?.[userData?.email] >= 0) {
+              handleCreateExpense({
+                name: `Settle Up by ${userData?.email}`,
+                amount,
+                groupId,
+                paidBy: paidByOrOwedBy,
+                owedBy: [
+                  {
+                    email: userData?.email,
+                    amount,
+                  },
+                ],
+              });
+            } else {
+              handleCreateExpense({
+                name: `Settle Up by ${userData?.email}`,
+                amount,
+                groupId,
+                paidBy: [
+                  {
+                    email: userData?.email,
+                    amount,
+                  },
+                ],
+                owedBy: paidByOrOwedBy,
+              });
+            }
+
+            setOpenSettleUpModal(false);
+          }}
+        >
+          <h2>{stringForPending(expensesData?.userSet?.[userData?.email])}</h2>
+        </Modal>
       )}
     </div>
   );

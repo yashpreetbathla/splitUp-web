@@ -9,12 +9,13 @@ const Modal = ({
   closeBtnText = "Close",
   saveBtnText = "Create",
   isDisabled = false,
+  titleTxt = "Create",
 }) => {
   return (
     <dialog id="my_modal_3" className="modal" open={open}>
       <div className={`modal-box ${width} bg-stone-900 scroll-auto`}>
         <div className="my-4">
-          <h2 className="text-2xl font-bold">Create</h2>
+          <h2 className="text-2xl font-bold">{titleTxt}</h2>
         </div>
         <div className="modal-body">{children}</div>
         <div className="modal-action">
