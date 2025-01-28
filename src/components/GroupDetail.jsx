@@ -1,17 +1,16 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import DashboardNav from "./DashboardNav";
 import axios from "axios";
 import { BASE_URL } from "../utils/constants";
 import { useDispatch, useSelector } from "react-redux";
-import { addGroup } from "../store/slices/groupSlice";
 import Expenses from "./Expenses";
 import { addExpenses } from "../store/slices/expensesSlice";
 
 const GroupDetail = () => {
   const { groupId } = useParams();
+  const [groupData, setGroupData] = useState(null);
 
-  const groupData = useSelector((store) => store.group);
   const expensesData = useSelector((store) => store.expenses);
   const dispatch = useDispatch();
 
@@ -21,7 +20,7 @@ const GroupDetail = () => {
         withCredentials: true,
       });
 
-      dispatch(addGroup(res.data?.data));
+      setGroupData(res.data?.data);
     } catch (err) {
       console.error(err);
     }

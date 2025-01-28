@@ -15,8 +15,9 @@ const Feed = () => {
       const res = await axios.get(BASE_URL + "/profile/groups", {
         withCredentials: true,
       });
-
-      dispatch(addGroup(res.data?.data));
+      if (res.data?.data) {
+        dispatch(addGroup(res.data?.data));
+      }
     } catch (err) {
       console.error(err);
     }

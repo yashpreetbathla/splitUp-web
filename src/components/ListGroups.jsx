@@ -2,6 +2,7 @@ import React from "react";
 import { Link } from "react-router-dom";
 
 const ListGroups = ({ groupsData }) => {
+  console.log(groupsData, "groupsData");
   return (
     <ul className="list bg-base-100 rounded-box shadow-md">
       {groupsData?.map((groupData) => {
