@@ -290,7 +290,7 @@ const GroupDetail = () => {
           <Modal
             open={openPaidBy}
             onClose={() => setOpenPaidBy(false)}
-            width="w-2xl"
+            width="w-auto"
             saveBtnText="Save"
             onSubmit={() => {
               if (btn === OPTIONS_SPLIT.split) {
@@ -432,7 +432,7 @@ const GroupDetail = () => {
         <Modal
           open={openSettleUpModal}
           onClose={() => setOpenSettleUpModal(false)}
-          width="w-md"
+          width="w-auto"
           titleTxt="Settle Up"
           saveBtnText="Settle Up"
           onSubmit={() => {
