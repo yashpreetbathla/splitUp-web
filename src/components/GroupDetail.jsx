@@ -252,7 +252,11 @@ const GroupDetail = () => {
         />
       </div>
       <div>
-        <Expenses expensesData={expensesData} />
+        <Expenses
+          expensesData={expensesData}
+          fetchExpenseData={fetchExpenseData}
+          dispatch={dispatch}
+        />
       </div>
       {open && (
         <Modal
@@ -291,7 +295,7 @@ const GroupDetail = () => {
           <Modal
             open={openPaidBy}
             onClose={() => setOpenPaidBy(false)}
-            width="w-auto"
+            width="w-1/2"
             saveBtnText="Save"
             onSubmit={() => {
               if (btn === OPTIONS_SPLIT.split) {
