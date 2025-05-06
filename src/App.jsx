@@ -9,22 +9,17 @@ import GroupDetail from "./components/GroupDetail";
 
 function App() {
   return (
-    <>
-      <Provider store={store}>
-        <BrowserRouter basename="/">
-          <Routes>
-            <Route path="/" element={<Body />}>
-              <Route path="/" element={<Feed />} />
-              <Route path="/login" element={<Login />} />
-              <Route path="/group/:groupId" element={<GroupDetail />} />
-              {/* <Route path="/connections" element={<Connections />} /> */}
-              {/* <Route path="/requests" element={<Requests />} /> */}
-              {/* <Route path="/chat/:targetUserId" element={<Chat />} /> */}
-            </Route>
-          </Routes>
-        </BrowserRouter>
-      </Provider>
-    </>
+    <Provider store={store}>
+      <BrowserRouter basename="/">
+        <Routes>
+          <Route path="/" element={<Body />}>
+            <Route path="/" element={<Feed />} />
+            <Route path="/login" element={<Login />} />
+            <Route path="/group/:groupId" element={<GroupDetail />} />
+          </Route>
+        </Routes>
+      </BrowserRouter>
+    </Provider>
   );
 }
 

@@ -7,9 +7,9 @@ const ExpenseSummary = ({ expenseData }) => {
         {expenseData?.owedBy?.map((expense) => {
           return (
             <div key={expense?._id} className="flex flex-row gap-1">
-              <div>{expense?.email}</div>
+              <div className="text-blue-400"> {expense?.email}</div>
               owes
-              <div>{expense?.amount}₹</div>
+              <div className="text-red-500">{expense?.amount}₹</div>
             </div>
           );
         })}
@@ -18,9 +18,9 @@ const ExpenseSummary = ({ expenseData }) => {
         {expenseData?.paidBy?.map((expense) => {
           return (
             <div key={expense?._id} className="flex flex-row gap-1">
-              <div>{expense?.email}</div>
+              <div className="text-blue-400">{expense?.email}</div>
               paid
-              <div>{expense?.amount}₹</div>
+              <div className="text-green-500">{expense?.amount}₹</div>
             </div>
           );
         })}

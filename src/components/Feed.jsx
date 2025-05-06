@@ -78,6 +78,7 @@ const Feed = () => {
               setGroupName={setGroupName}
             />
           }
+          isDisabled={participants?.length < 1}
         />
       )}
     </div>

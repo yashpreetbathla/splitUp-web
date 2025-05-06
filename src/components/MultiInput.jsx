@@ -41,6 +41,15 @@ const MultiInput = ({
     onUsersChange?.(newUsers); // Notify parent component of changes
   };
 
+  const handleBlur = (e) => {
+    if (e.target.value !== "") {
+      // Mimicking enter key press
+      e.key = "Enter";
+      handleKeyDown(e);
+      setCurrentInput("");
+    }
+  };
+
   return (
     <div className="flex flex-col gap-2">
       <label className="input validator">
@@ -55,6 +64,7 @@ const MultiInput = ({
           value={currentInput}
           onChange={(e) => setCurrentInput(e.target.value)}
           onKeyDown={handleKeyDown}
+          onBlur={handleBlur}
         />
       </label>
 

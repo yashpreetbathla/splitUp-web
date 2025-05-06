@@ -7,7 +7,6 @@ const CreateExpenseBody = ({
   setPayload,
 }) => {
   const isAmountAndNameValid = (payload) => {
-    console.log(payload, Number(payload?.amount));
     if (
       !payload?.name ||
       !payload?.amount ||
@@ -56,32 +55,37 @@ const CreateExpenseBody = ({
         />
       </label>
 
-      <div className="flex flex-row items-center mt-4 w-2/3">
-        <select
-          className="select select-bordered w-full max-w-xs m-1"
-          value={payload?.paidBy}
-          onChange={(e) => setPayload({ ...payload, paidBy: e.target.value })}
-          disabled={!isAmountAndNameValid(payload)}
-        >
-          <option disabled selected>
-            Paid by
-          </option>
-          {groupData?.participants?.map((participant) => (
-            <option key={participant} value={participant}>
-              {participant}
+      <div className="flex flex-row items-center mt-4 w-full gap-1 justify-evenly">
+        <div>
+          <select
+            className="select select-bordered"
+            value={payload?.paidBy}
+            onChange={(e) => setPayload({ ...payload, paidBy: e.target.value })}
+            disabled={!isAmountAndNameValid(payload)}
+          >
+            <option disabled selected>
+              Paid by
             </option>
-          ))}
-        </select>
+            {groupData?.participants?.map((participant) => (
+              <option key={participant} value={participant}>
+                {participant}
+              </option>
+            ))}
+          </select>
+        </div>
+        <div>
+          <p> and split</p>
+        </div>
 
-        <p>and split</p>
-
-        <button
-          className="btn"
-          disabled={isAmountAndNameValid(payload) ? "" : "disabled"}
-          onClick={() => setOpenPaidBy(true)}
-        >
-          Owed by
-        </button>
+        <div>
+          <button
+            className="btn btn-primary"
+            disabled={isAmountAndNameValid(payload) ? "" : "disabled"}
+            onClick={() => setOpenPaidBy(true)}
+          >
+            Owed by
+          </button>
+        </div>
       </div>
     </div>
   );
