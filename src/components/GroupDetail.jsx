@@ -81,7 +81,7 @@ const GroupDetail = () => {
   const [openPaidBy, setOpenPaidBy] = useState(false);
   const [openSettleUpModal, setOpenSettleUpModal] = useState(false);
 
-  const [btn, setBtn] = useState(OPTIONS_SPLIT.split);
+  const [btn, setBtn] = useState(OPTIONS_SPLIT.theyOwe);
   const [activeTab, setActiveTab] = useState(TABS_DATA.split_by_amount);
 
   const tabsData = [
@@ -295,7 +295,7 @@ const GroupDetail = () => {
           <Modal
             open={openPaidBy}
             onClose={() => setOpenPaidBy(false)}
-            width="w-1/2"
+            width="w-auto"
             saveBtnText="Save"
             onSubmit={() => {
               if (btn === OPTIONS_SPLIT.split) {
@@ -327,8 +327,6 @@ const GroupDetail = () => {
                     (acc, curr) => acc + Number(curr),
                     0
                   );
-
-                  console.log("test,", totalShares);
 
                   setPayload((prev) => ({
                     ...prev,

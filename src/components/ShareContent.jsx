@@ -41,68 +41,18 @@ const ShareContent = ({ tab, groupData, payload, activeTab, setPayload }) => {
 
   if (tab === TABS_DATA.split_by_amount) {
     return (
-      <div>
+      <fieldset className="fieldset bg-base-200 border-base-300 rounded-box w-xs border p-4">
+        <legend className="fieldset-legend">Split Details</legend>
         {groupData?.participants?.map((participant) => (
-          <div key={participant} className="flex flex-row gap-2">
-            <label className="input validator">
-              <span className="input-label">{participant}</span>
-              <input
-                type="number"
-                required
-                placeholder="Amount"
-                pattern="[0-9]*"
-                title="Only numbers"
-                value={data?.[participant]}
-                onChange={(e) =>
-                  setData({ ...data, [participant]: e.target.value })
-                }
-              />
+          <div key={participant} className="form-control">
+            <label className="label">
+              <span className="label-text">{participant}</span>
             </label>
-          </div>
-        ))}
-        {errorCheck(activeTab, data, payload)}
-      </div>
-    );
-  }
-
-  if (tab === TABS_DATA.split_by_percentage) {
-    return (
-      <div>
-        {groupData?.participants?.map((participant) => (
-          <div key={participant} className="flex flex-row gap-2">
-            <div>
-              <label className="input validator">
-                <span className="input-label">{participant}</span>
-                <input
-                  type="number"
-                  required
-                  placeholder="Percentage"
-                  pattern="[0-9]*"
-                  title="Only numbers"
-                  value={data?.[participant]}
-                  onChange={(e) =>
-                    setData({ ...data, [participant]: e.target.value })
-                  }
-                />
-              </label>
-            </div>
-          </div>
-        ))}
-        {errorCheck(activeTab, data, payload)}
-      </div>
-    );
-  }
-
-  return (
-    <div>
-      {groupData?.participants?.map((participant) => (
-        <div key={participant} className="flex flex-row gap-2">
-          <label className="input validator">
-            <span className="input-label">{participant}</span>
             <input
               type="number"
+              className="input input-bordered"
               required
-              placeholder="Share"
+              placeholder="Amount"
               pattern="[0-9]*"
               title="Only numbers"
               value={data?.[participant]}
@@ -110,11 +60,65 @@ const ShareContent = ({ tab, groupData, payload, activeTab, setPayload }) => {
                 setData({ ...data, [participant]: e.target.value })
               }
             />
+          </div>
+        ))}
+        {errorCheck(activeTab, data, payload)}
+      </fieldset>
+    );
+  }
+
+  if (tab === TABS_DATA.split_by_percentage) {
+    return (
+      <fieldset className="fieldset bg-base-200 border-base-300 rounded-box w-xs border p-4">
+        <legend className="fieldset-legend">Split Details</legend>
+        {groupData?.participants?.map((participant) => (
+          <div key={participant} className="form-control">
+            <label className="label">
+              <span className="label-text">{participant}</span>
+            </label>
+            <input
+              type="number"
+              className="input input-bordered"
+              required
+              placeholder="Percentage"
+              pattern="[0-9]*"
+              title="Only numbers"
+              value={data?.[participant]}
+              onChange={(e) =>
+                setData({ ...data, [participant]: e.target.value })
+              }
+            />
+          </div>
+        ))}
+        {errorCheck(activeTab, data, payload)}
+      </fieldset>
+    );
+  }
+
+  return (
+    <fieldset className="fieldset bg-base-200 border-base-300 rounded-box w-xs border p-4">
+      <legend className="fieldset-legend">Split Details</legend>
+      {groupData?.participants?.map((participant) => (
+        <div key={participant} className="form-control">
+          <label className="label">
+            <span className="label-text">{participant}</span>
           </label>
+          <input
+            type="number"
+            className="input input-bordered"
+            required
+            placeholder="Share"
+            pattern="[0-9]*"
+            title="Only numbers"
+            value={data?.[participant]}
+            onChange={(e) =>
+              setData({ ...data, [participant]: e.target.value })
+            }
+          />
         </div>
       ))}
       {errorCheck(activeTab, data, payload)}
-    </div>
+    </fieldset>
   );
 };
 
