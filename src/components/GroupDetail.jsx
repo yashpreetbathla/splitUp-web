@@ -283,6 +283,7 @@ const GroupDetail = () => {
               groupData={groupData}
             />
           }
+          width="100%"
         />
       )}
       {openPaidBy && (

@@ -22,7 +22,7 @@ const CreateExpenseBody = ({
 
   return (
     <div>
-      <label className="input validator">
+      <label className="input validator" style={{ width: "100%" }}>
         <span className="input-label">Expense Name</span>
         <input
           type="input"
@@ -41,7 +41,7 @@ const CreateExpenseBody = ({
         <br />
         containing only letters, numbers or dash
       </p>
-      <label className="input validator">
+      <label className="input validator" style={{ width: "100%" }}>
         <span className="input-label">Amount ( ₹ )</span>
         <input
           type="number"
@@ -56,30 +56,22 @@ const CreateExpenseBody = ({
         />
       </label>
 
-      <div className="flex flex-row items-center mt-4">
-        <details className="dropdown dropdown-hover">
-          <summary
-            className="btn m-1 "
-            disabled={isAmountAndNameValid(payload) ? "" : "disabled"}
-          >
+      <div className="flex flex-row items-center mt-4 w-2/3">
+        <select
+          className="select select-bordered w-full max-w-xs m-1"
+          value={payload?.paidBy}
+          onChange={(e) => setPayload({ ...payload, paidBy: e.target.value })}
+          disabled={!isAmountAndNameValid(payload)}
+        >
+          <option disabled selected>
             Paid by
-          </summary>
-          <ul className="menu dropdown-content bg-base-100 rounded-box z-[1] w-52 p-2 shadow">
-            {groupData?.participants?.map((participant) => (
-              <li
-                key={participant}
-                className={`${
-                  payload?.paidBy === participant ? "bg-base-300" : ""
-                }`}
-                onClick={() => {
-                  setPayload({ ...payload, paidBy: participant });
-                }}
-              >
-                <a> {participant}</a>
-              </li>
-            ))}
-          </ul>
-        </details>
+          </option>
+          {groupData?.participants?.map((participant) => (
+            <option key={participant} value={participant}>
+              {participant}
+            </option>
+          ))}
+        </select>
 
         <p>and split</p>
 

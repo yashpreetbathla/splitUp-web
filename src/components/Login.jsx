@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import axios from "axios";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { BASE_URL } from "../utils/constants";
 import { addUser } from "../store/slices/userSlice";
@@ -16,6 +16,7 @@ const Login = () => {
 
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const userData = useSelector((store) => store.user);
 
   const handleLogin = async () => {
     try {
@@ -29,6 +30,7 @@ const Login = () => {
           withCredentials: true,
         }
       );
+
       if (res.data?.data && !userData) {
         dispatch(addUser(res.data?.data));
         navigate("/");
@@ -45,7 +47,7 @@ const Login = () => {
         {
           firstName,
           lastName,
-          emailId,
+          email: emailId,
           password,
         },
         {
@@ -54,7 +56,7 @@ const Login = () => {
       );
       if (res.data?.data && !userData) {
         dispatch(addUser(res.data.data));
-        navigate("/profile");
+        navigate("/");
       }
     } catch (err) {
       setError(err?.response?.data?.message || "something went wrong");
