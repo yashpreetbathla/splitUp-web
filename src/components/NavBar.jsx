@@ -25,7 +25,10 @@ const NavBar = () => {
     <div className="navbar bg-base-300">
       <div className="flex-1">
         <Link to="/" className="btn btn-ghost text-xl">
-          🧑🏻‍💻 SplitUp
+          <span className="animate-pulse text-primary hover:animate-bounce">
+            🧑🏻‍💻
+          </span>
+          <span className="animate-bounce hover:text-secondary">SplitUp</span>
         </Link>
       </div>
 

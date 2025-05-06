@@ -220,13 +220,27 @@ const GroupDetail = () => {
                               if (item?.fromUser === userData?.email) {
                                 return (
                                   <p>
-                                    You owe {item?.toUser} {item?.amount}₹
+                                    You owe{" "}
+                                    <span className="text-blue-500">
+                                      {" "}
+                                      {item?.toUser}
+                                    </span>
+                                    <span className="text-green-500">
+                                      {item?.amount}₹
+                                    </span>
                                   </p>
                                 );
                               }
                               return (
                                 <p>
-                                  You are owed {item?.fromUser} {item?.amount}₹
+                                  You are owed{" "}
+                                  <span className="text-blue-500">
+                                    {item?.fromUser}
+                                  </span>
+                                  <span className="text-red-500">
+                                    {" "}
+                                    {item?.amount}₹
+                                  </span>
                                 </p>
                               );
                             })}
