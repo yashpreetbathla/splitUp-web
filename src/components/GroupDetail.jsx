@@ -166,7 +166,6 @@ const GroupDetail = () => {
     fetchGroupData();
     fetchExpenseData();
   }, []);
-
   return (
     <div>
       <div>
@@ -177,7 +176,7 @@ const GroupDetail = () => {
           infoData={() => {
             return (
               <div className="flex gap-2 items-center">
-                {expensesData?.userSet?.[userData?.email] !== 0 && (
+                {expensesData?.userSet?.[userData?.email] > 0 && (
                   <>
                     <div className="dropdown dropdown-right dropdown-hover">
                       <div
@@ -225,7 +224,7 @@ const GroupDetail = () => {
                                       {" "}
                                       {item?.toUser}
                                     </span>
-                                    <span className="text-green-500">
+                                    <span className="text-red-500">
                                       {item?.amount}₹
                                     </span>
                                   </p>
@@ -237,7 +236,7 @@ const GroupDetail = () => {
                                   <span className="text-blue-500">
                                     {item?.fromUser}
                                   </span>
-                                  <span className="text-red-500">
+                                  <span className="text-green-500">
                                     {" "}
                                     {item?.amount}₹
                                   </span>
